@@ -26,13 +26,15 @@ namespace ДЗпоМетодам
                 {
                     Console.Write($"{i * num.GetLength(1) + j + 1}-[{i},{j}] = ");
 
-                        flag = int.TryParse(Console.ReadLine(), out num[i, j]);
+                    //flag = int.TryParse(Console.ReadLine(), out num[i, j]);
 
-                            if (!flag)
-                            {
-                                Console.WriteLine("Ошибка ввода, введите число!!!");
-                                j--;
-                            }
+                    //    if (!flag)
+                    //    {
+                    //        Console.WriteLine("Ошибка ввода, введите число!!!");
+                    //        j--;
+                    //    }
+
+                    num[i, j] = CheckEnterNumber(Console.ReadLine(), "Ошибка ввода, введите число!!!");
                 }
             }
 
@@ -72,7 +74,7 @@ namespace ДЗпоМетодам
                 case 2:
                     Console.WriteLine("Сортировка построчно:");
                     Console.WriteLine("По возрастанию:");
-
+                    int a, b;
                     for (int i = 0; i < num.GetLength(0); i++)
                     {
                         for (int j = 0; j < num.GetLength(1); j++)
