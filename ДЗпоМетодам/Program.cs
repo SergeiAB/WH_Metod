@@ -8,15 +8,15 @@ namespace ДЗпоМетодам
         static void Main(string[] args)
         {
             bool flag;
-            int x, y;
+            int size_x,size_y, menuSelection;
             //string tmp;
             Console.WriteLine("Введите размер массива Array[x,y]");
                 Console.Write("x = ");
-                    x = CheckEnterNumber(Console.ReadLine(), "Ошибка ввода измерения массива", 1);
+                    size_x = CheckEnterNumber(Console.ReadLine(), "Ошибка ввода измерения массива", 1);
                 Console.Write("y = ");
-                    y = CheckEnterNumber(Console.ReadLine(), "Ошибка ввода измерения массива", 1);
+                    size_y = CheckEnterNumber(Console.ReadLine(), "Ошибка ввода измерения массива", 1);
 
-            int[,] num = new int[x, y];
+            int[,] num = new int[size_x, size_y];
 
             Console.WriteLine($"Введите {num.Length} элементов\nмассива используя Enter:");
 
@@ -36,24 +36,24 @@ namespace ДЗпоМетодам
                 }
             }
 
-            Console.WriteLine($"Ваш массив Array[{x},{y}]:");
+            Console.WriteLine($"Ваш массив Array[{size_x},{size_y}]:");
             Show(num);
 
             Console.Write("Нажмите если надо:\n" +
                 "Найти количество положительных/отрицательных чисел - 1\n" +
                 "Сортировка элементов матрицы построчно (в двух направлениях) - 2\n" +
                 "Инверсия элементов матрицы построчно - 3\n");
-            int n;
 
-            n = CheckEnterNumber(Console.ReadLine(),"--Введите цифры от 1 до 3",1,3);
+
+            menuSelection = CheckEnterNumber(Console.ReadLine(),"--Введите цифры от 1 до 3",1,3);
            
 
 
-            int[,] Nnum = new int[x, y];
+            int[,] Nnum = new int[size_x, size_y];
             Array.Copy(num, Nnum, num.Length);//создаем копию массива
 
-            int a = 0, b = 0;
-            switch (n)
+            int negativCount = 0, positivCount = 0;
+            switch (menuSelection)
             {
                 case 1:
 
@@ -61,13 +61,13 @@ namespace ДЗпоМетодам
                     {
                         for (int j = 0; j < num.GetLength(1); j++)
                         {
-                            if (num[i, j] < 0) a++;
-                            else if (num[i, j] > 0) b++;
+                            if (num[i, j] < 0) negativCount++;
+                            else if (num[i, j] > 0) positivCount++;
                         }
 
                     }
-                    Console.WriteLine($"В массиве:\nПоложительных чисел - {b}\n" +
-                                      $"Отрицательных чисел - {a}");
+                    Console.WriteLine($"В массиве:\nПоложительных чисел - {positivCount}\n" +
+                                      $"Отрицательных чисел - {negativCount}");
                     break;
                 case 2:
                     Console.WriteLine("Сортировка построчно:");
@@ -152,38 +152,23 @@ namespace ДЗпоМетодам
                 }
             }
             
-            //метод для проверки вводимых значений с консоли , условие больше minValue
-            //static int CheckEnterNumber(string enterText, int minValue,string message)
-            //{   bool flag;
-            //    int number;
-            //    do
-            //    {
-            //        flag = int.TryParse(enterText, out number);
-            //            if (!flag || number <= minValue)
-            //            {
-            //                Console.WriteLine(message);
-            //                    flag = false;
-            //                        enterText =Console.ReadLine();
-            //            }
-            //    } while (!flag);
-            //        return number;
-            //}
-        //метод для проверки вводимых значений с консоли , условие >= minValue & <= maxValue
-        static int CheckEnterNumber(string enterText, string message,int minValue = int.MinValue, int maxValue = int.MaxValue)
-        {
-            bool flag;
-            int number;
-            do
+           
+            //метод для проверки вводимых значений с консоли , условие >= minValue & <= maxValue
+            static int CheckEnterNumber(string enterText, string message,int minValue = int.MinValue, int maxValue = int.MaxValue)
             {
-                flag = int.TryParse(enterText, out number);
-                if (!flag || number < minValue || number>maxValue)
+                bool flag;
+                int number;
+                do
                 {
-                    Console.WriteLine(message);
-                    flag = false;
-                    enterText = Console.ReadLine();
-                }
-            } while (!flag);
-            return number;
-        }
+                    flag = int.TryParse(enterText, out number);
+                    if (!flag || number < minValue || number>maxValue)
+                    {
+                        Console.WriteLine(message);
+                        flag = false;
+                        enterText = Console.ReadLine();
+                    }
+                } while (!flag);
+                return number;
+            }
     }
 }
