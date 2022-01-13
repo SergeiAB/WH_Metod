@@ -7,141 +7,88 @@ namespace ДЗпоМетодам
 
         static void Main(string[] args)
         {
-            bool flag;
             int size_x,size_y, menuSelection;
-            //string tmp;
-            Console.WriteLine("Введите размер массива Array[x,y]");
+            int[,] num;
+            string msg="Ошибка ввода значения!!!";
+
+                Console.WriteLine("Введите размер массива Array[x,y]");
+
                 Console.Write("x = ");
-                    size_x = CheckEnterNumber(Console.ReadLine(), "Ошибка ввода измерения массива", 1);
+
+            size_x = CheckEnterNumber(Console.ReadLine(),msg, 1);
+
                 Console.Write("y = ");
-                    size_y = CheckEnterNumber(Console.ReadLine(), "Ошибка ввода измерения массива", 1);
 
-            int[,] num = new int[size_x, size_y];
+            size_y = CheckEnterNumber(Console.ReadLine(), msg, 1);
 
-            Console.WriteLine($"Введите {num.Length} элементов\nмассива используя Enter:");
+            num = new int[size_x, size_y];
 
-            for (int i = 0; i < num.GetLength(0); i++)
-            {
-                for (int j = 0; j < num.GetLength(1); j++)
-                {
-                    Console.Write($"{i * num.GetLength(1) + j + 1}-[{i},{j}] = ");
+                Console.WriteLine($"Введите {num.Length} элементов\nмассива используя Enter:");
 
-                    //flag = int.TryParse(Console.ReadLine(), out num[i, j]);
+            FillingArray(num,msg);
 
-                    //    if (!flag)
-                    //    {
-                    //        Console.WriteLine("Ошибка ввода, введите число!!!");
-                    //        j--;
-                    //    }
+                Console.WriteLine($"Ваш массив Array[{size_x},{size_y}]:");
 
-                    num[i, j] = CheckEnterNumber(Console.ReadLine(), "Ошибка ввода, введите число!!!");
-                }
-            }
-
-            Console.WriteLine($"Ваш массив Array[{size_x},{size_y}]:");
             Show(num);
 
-            Console.Write("Нажмите если надо:\n" +
-                "Найти количество положительных/отрицательных чисел - 1\n" +
-                "Сортировка элементов матрицы построчно (в двух направлениях) - 2\n" +
-                "Инверсия элементов матрицы построчно - 3\n");
+                Console.Write("Нажмите если надо:\n" +
+                    "Найти количество положительных/отрицательных чисел - 1\n" +
+                    "Сортировка элементов матрицы построчно (в двух направлениях) - 2\n" +
+                    "Инверсия элементов матрицы построчно - 3\n");
 
-
-            menuSelection = CheckEnterNumber(Console.ReadLine(),"--Введите цифры от 1 до 3",1,3);
-           
-
+            menuSelection = CheckEnterNumber(Console.ReadLine(),msg,1,3);
 
             int[,] Nnum = new int[size_x, size_y];
+
             Array.Copy(num, Nnum, num.Length);//создаем копию массива
 
-            int negativCount = 0, positivCount = 0;
+            
             switch (menuSelection)
             {
                 case 1:
-
-                    for (int i = 0; i < num.GetLength(0); i++)
                     {
-                        for (int j = 0; j < num.GetLength(1); j++)
-                        {
-                            if (num[i, j] < 0) negativCount++;
-                            else if (num[i, j] > 0) positivCount++;
-                        }
+                        CountPozitivNegativ(num, out int positivCount, out int negativCount);
 
+                        Console.WriteLine($"В массиве:\nПоложительных чисел - {positivCount}\nОтрицательных чисел - {negativCount}");                
+                       
+                        break;
                     }
-                    Console.WriteLine($"В массиве:\nПоложительных чисел - {positivCount}\n" +
-                                      $"Отрицательных чисел - {negativCount}");
-                    break;
                 case 2:
-                    Console.WriteLine("Сортировка построчно:");
-                    Console.WriteLine("По возрастанию:");
-                    int a, b;
-                    for (int i = 0; i < num.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < num.GetLength(1); j++)
-                        {
-                            for (int k = 0; k < num.GetUpperBound(1); k++)
-                            {
-                                if (num[i, k] > num[i, k + 1])
-                                {
-                                    a = num[i, k];
-                                    num[i, k] = num[i, k + 1];
-                                    num[i, k + 1] = a;
-                                }
+                    {   
+                        SortingByLine(num, Nnum);
 
-                                if (Nnum[i, k] < Nnum[i, k + 1])
-                                {
-                                    a = Nnum[i, k];
-                                    Nnum[i, k] = Nnum[i, k + 1];
-                                    Nnum[i, k + 1] = a;
-                                }
-                            }
-                        }
+                        Console.WriteLine("Сортировка построчно:\nПо возрастанию:");
+                          
+                        Show(num);
+
+                        Console.WriteLine("По убыванию:");
+
+                        Show(Nnum);
+
+                        break;
                     }
-                    Show(num);
-                    Console.WriteLine("или по убыванию:");
-                    Show(Nnum);
-                    break;
-
                 case 3:
-                    Console.WriteLine("Инверсия массива:");
-                    for (int i = 0; i < num.GetLength(0); i++)
                     {
-                        for (int j = 0; j < num.GetLength(1); j++)
-                        {
-                            b = i * num.GetLength(1) + j + 1;
+                        ArrayInversion(num);
 
-                            if (b > num.Length / 2) break;
-                            a = num[i, j];
-                            num[i, j] = num[num.GetUpperBound(0) - i, num.GetUpperBound(1) - j];
-                            num[num.GetUpperBound(0) - i, num.GetUpperBound(1) - j] = a;
+                        ArrayInversionLine(Nnum);
 
-                        }
-                    }
+                        Console.WriteLine("Инверсия всего массива:");
 
-                    Show(num);
+                        Show(num);
 
-                    Console.WriteLine("или инверсия массива построчно:");
-                    for (int i = 0; i < Nnum.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < Nnum.GetLength(1) / 2; j++)
-                        {
-                            b = Nnum[i, j];
-                            Nnum[i, j] = Nnum[i, Nnum.GetUpperBound(1) - j];
-                            Nnum[i, Nnum.GetUpperBound(1) - j] = b;
-                        }
+                        Console.WriteLine("Инверсия массива построчно:");
 
-                    }
-                    Show(Nnum);
-                    break;
-                //default:
-                //    Console.WriteLine($"Вы выбрали {n}, а надо 1,2 или 3 !!!");
-                //    break;
+                        Show(Nnum);
+
+                        break;
+                    }   
+                
             }
-            Console.ReadKey();
-           
+  
         }
 
-             // метод для вывода массива на консоль в виде матрицы
+                // метод для вывода массива на консоль в виде матрицы
             static void Show(int[,] num)
             {
                 for (int i = 0; i < num.GetLength(0); i++)
@@ -155,7 +102,7 @@ namespace ДЗпоМетодам
             }
             
            
-            //метод для проверки вводимых значений с консоли , условие >= minValue & <= maxValue
+                //метод для проверки вводимых значений с консоли на число и по условию >= minValue & <= maxValue
             static int CheckEnterNumber(string enterText, string message,int minValue = int.MinValue, int maxValue = int.MaxValue)
             {
                 bool flag;
@@ -172,5 +119,116 @@ namespace ДЗпоМетодам
                 } while (!flag);
                 return number;
             }
+            
+                // Метод заполнения массива с консоли 
+            static void FillingArray(int[,] numArray, string message)
+            {
+                for (int i = 0; i < numArray.GetLength(0); i++)
+                {
+                    for (int j = 0; j < numArray.GetLength(1); j++)
+                    {
+                        Console.Write($"{i * numArray.GetLength(1) + j + 1}-[{i},{j}] = ");
+                        numArray[i, j] = CheckEnterNumber(Console.ReadLine(),message);
+                    }
+                }
+            }
+
+                //Метод считает количество положительных и отрицательных чисел
+            static void CountPozitivNegativ(int[,] numArray,out int positivCount, out int negativCount)
+            {
+                negativCount = 0;
+                positivCount = 0;
+                for (int i = 0; i < numArray.GetLength(0); i++)
+                {
+                    for (int j = 0; j < numArray.GetLength(1); j++)
+                    {
+                        if (numArray[i, j] < 0)
+                        {
+                            negativCount++;
+                        }
+                        else if (numArray[i, j] > 0)
+                        {
+                            positivCount++;
+                        }
+                    }
+
+                }
+
+
+            }
+            
+                //Метод сортировка построчно по возрастанию и убывынию
+            static void SortingByLine(int[,] num,int[,] Nnum )
+            {
+                int temp;
+
+                for (int i = 0; i < num.GetLength(0); i++)
+                {
+                    for (int j = 0; j < num.GetLength(1); j++)
+                    {
+                        for (int k = 0; k < num.GetUpperBound(1); k++)
+                        {
+                            if (num[i, k] > num[i, k + 1])
+                            {
+                                temp = num[i, k];
+                                num[i, k] = num[i, k + 1];
+                                num[i, k + 1] = temp;
+                            }
+
+                            if (Nnum[i, k] < Nnum[i, k + 1])
+                            {
+                                temp = Nnum[i, k];
+                                Nnum[i, k] = Nnum[i, k + 1];
+                                Nnum[i, k + 1] = temp;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+                //метод инверсия массива
+            static void ArrayInversion(int[,] num)
+            {
+                int temp;
+                int itemCounter;
+                for (int i = 0; i < num.GetLength(0); i++)
+                {
+                    for (int j = 0; j < num.GetLength(1); j++)
+                    {
+                        itemCounter = i * num.GetLength(1) + j + 1;
+
+                        if (itemCounter > num.Length / 2) break;
+                        temp = num[i, j];
+                        num[i, j] = num[num.GetUpperBound(0) - i, num.GetUpperBound(1) - j];
+                        num[num.GetUpperBound(0) - i, num.GetUpperBound(1) - j] = temp;
+
+                    }
+                }
+
+            }
+
+                // Метод инверсия массива по строчно
+            static void ArrayInversionLine(int[,] Nnum)
+            {   
+                int temp;
+                for (int i = 0; i < Nnum.GetLength(0); i++)
+                {
+                    
+                    for (int j = 0; j < Nnum.GetLength(1) / 2; j++)
+                    {
+                        temp = Nnum[i, j];
+                        Nnum[i, j] = Nnum[i, Nnum.GetUpperBound(1) - j];
+                        Nnum[i, Nnum.GetUpperBound(1) - j] = temp;
+                    }
+
+                }
+
+            }
+
+
+
+
     }
+
 }
